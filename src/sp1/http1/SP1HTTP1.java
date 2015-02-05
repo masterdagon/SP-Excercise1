@@ -17,7 +17,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 /**
- * @author Lars Mortensen
+ * @author Lars Mortensen && Martin Høigaard Rasmussen
  */
 public class SP1HTTP1 {
 
@@ -111,7 +111,7 @@ public class SP1HTTP1 {
             rsh.add("Content-Type", "text/html");
             he.sendResponseHeaders(200, response.length());
             try (PrintWriter pw = new PrintWriter(he.getResponseBody())) {
-                pw.print(response); //What happens if we use a println instead of print --> Explain
+                pw.print(response);
             }
         }
     }
@@ -120,17 +120,60 @@ public class SP1HTTP1 {
 
         @Override
         public void handle(HttpExchange he) throws IOException {
+            String str = he.getRequestURI().toString();
+            System.out.println(str);
+            String[] split = str.split("/", 3);
+            System.out.println("Length of split uri string: " + split.length);
+
             File file = new File(contentFolder + "index.html");
+
+            if (split.length == 3) {
+                String path = split[2];
+                file = new File(contentFolder + path);
+            }
+
             byte[] bytesToSend = new byte[(int) file.length()];
             try {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
                 bis.read(bytesToSend, 0, bytesToSend.length);
             } catch (IOException ie) {
                 ie.printStackTrace();
+                //error handling if file is not found, shows a 404 message
+                String response = "<h1>404 Not Found</h1>No context found for request";
+                Headers h = he.getResponseHeaders();
+                h.add("Content-Type", "text/html");
+                he.sendResponseHeaders(200, response.length());
+                try (PrintWriter pw = new PrintWriter(he.getResponseBody())) {
+                    pw.print(response);
+                }
             }
-            Headers h = he.getResponseHeaders();
-            h.add("Content-Type", "text/html");
+
+            if (split.length > 2) {
+                String[] content = split[2].split("\\.");
+                if (content[1].equalsIgnoreCase("jpg")) {
+                    Headers h = he.getResponseHeaders();
+                    h.add("Content-Type", "image/jpeg");
+                }
+                if (content[1].equalsIgnoreCase("pdf")) {
+                    Headers h = he.getResponseHeaders();
+                    h.add("Content-Type", "application/pdf");
+                }
+                if (content[1].equalsIgnoreCase("jar")) {
+                    Headers h = he.getResponseHeaders();
+                    h.add("Content-Type", "application/java-archive");
+                }
+                if (content[1].equalsIgnoreCase("html")) {
+                    Headers h = he.getResponseHeaders();
+                    h.add("Content-Type", "text/html");
+                }
+            }
+            if (split.length == 2) {
+                Headers h = he.getResponseHeaders();
+                h.add("Content-Type", "text/html");
+            }
+
             he.sendResponseHeaders(200, bytesToSend.length);
+
             try (OutputStream os = he.getResponseBody()) {
                 os.write(bytesToSend, 0, bytesToSend.length);
             }
@@ -176,7 +219,7 @@ public class SP1HTTP1 {
             h.add("Content-Type", "text/html");
             he.sendResponseHeaders(200, response.length());
             try (PrintWriter pw = new PrintWriter(he.getResponseBody())) {
-                pw.print(response); //What happens if we use a println instead of print --> Explain
+                pw.print(response);
             }
         }
     }
