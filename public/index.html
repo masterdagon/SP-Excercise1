@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Form Demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <style>
+            //så input felter er lige
+            label{width:6em; display:inline-block;float:left}
+            body {font-family:sans-serif;}
+            //laver lidt luft omkring fieldset og justerer bredden
+            fieldset{padding:1em; width:35em}
+            .myid {margin-bottom: 0.5em}
+        </style>
+    </head>
+    <body>
+        <h1>Form Demo</h1>
+        <form action="#" method="get">
+            //get form
+            <fieldset>
+                <legend>Form Demo</legend>
+                <div class="myid">
+                    <label for="fname">First Name:</label><input name="fname" id="fname" type="text">
+                </div><div class="myid">
+                    <label for="lname">Last Name:</label><input name="lname" id="lname" type="text">
+                </div>
+                <div class="myid">
+                    <label for="password">Password:</label><input name="password" id="password" type="password">
+                </div><div class="myid">
+                    <label for="teacher">Teacher:</label><input name="teacher" id="teacher" type="checkbox">
+                </div><div class="myid">
+                    <input type="submit" value="Submit">
+                </div>
+
+            </fieldset>
+        </form>
+        
+        <form action="welcome" method="post">
+            //post form
+            <fieldset>
+                <legend>Form Demo</legend>
+                <div class="myid">
+                    <label for="fname">First Name:</label><input name="fname" id="fname" type="text">
+                </div><div class="myid">
+                    <label for="lname">Last Name:</label><input name="lname" id="lname" type="text">
+                </div>
+                <div class="myid">
+                    <label for="password">Password:</label><input name="password" id="password" type="password">
+                </div><div class="myid">
+                    <label for="teacher">Teacher:</label><input name="teacher" id="teacher" type="checkbox">
+                </div><div class="myid">
+                    <input type="submit" value="Submit">
+                </div>
+
+            </fieldset>
+        </form>
+    </body>
+</html>
